@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class AcademicRecord extends Model
 {
     use HasFactory;
-    public $timestamps = false;
+
     public function student()
     {
         return $this->belongTo(Student::class);

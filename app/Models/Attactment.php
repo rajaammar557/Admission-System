@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Attactment extends Model
 {
-    public $timestamps = false;
+
     use HasFactory;
 }
