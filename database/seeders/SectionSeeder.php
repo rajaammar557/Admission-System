@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Section;
 use Illuminate\Database\Seeder;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class SectionSeeder extends Seeder
 {
@@ -12,6 +13,9 @@ class SectionSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        Section::factory()->create(['name' => 'Pre Medical']);
+        Section::factory()->create(['name' => 'Pre Engineering']);
+        Section::factory()->create(['name' => 'ICS (Intermidate in Computer Science)']);
+        Section::factory()->create(['name' => 'Pre Medical']);
     }
 }
