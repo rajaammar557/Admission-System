@@ -30,7 +30,12 @@
                         <td class="text-left py-3 px-4 space-x-5">
                             <a href="{{ route('students.show', $student->id) }}" class="text-blue-500">Details</a>
                             <a href="{{ route('students.edit', $student->id) }}" class="text-green-500">Edit</a>
-                            <a href="{{ route('students.destroy', $student->id) }}" class="text-red-500">Delete</a>
+
+                            <form action="{{ route('students.destroy', $student->id) }}" class="inline" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button class="text-red-500" type="submit" onclick="return confirm('Are you sure?')">Delete</button>
+                            </form>
                         </td>
                     </tr>
                 @endforeach

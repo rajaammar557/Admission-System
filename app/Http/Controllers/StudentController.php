@@ -48,7 +48,7 @@ class StudentController extends Controller
 
         Student::create($validator);
 
-        return redirect(route('students.index'))->with('message','Student created');
+        return redirect(route('students.index'))->with('message', 'Student created');
     }
 
     /**
@@ -80,6 +80,9 @@ class StudentController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $student = Student::findOrFail($id); // Find student or throw error
+        $student->delete(); // Delete student
+
+        return redirect()->route('students.index')->with('message', 'Student deleted successfully!');
     }
 }
