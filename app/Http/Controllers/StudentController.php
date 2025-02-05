@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Student;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\StudentRequest;
 
 class StudentController extends Controller
 {
@@ -28,25 +30,9 @@ class StudentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StudentRequest $request)
     {
-        $validator = $request->validate([
-            'student_name' => 'required|string|max:255',
-            'father_name' => 'required|string|max:255',
-            'profession' => 'required|string|max:255',
-            'mobile_number' => 'required|integer',
-            'whatsapp_number' => 'required|integer',
-            'birthdate' => 'required|date',
-            'religion' => 'required|string|max:255',
-            'present_address' => 'required|string|max:255',
-            'permanent_address' => 'required|string|max:255',
-            'last_institution' => 'required|string|max:255',
-            'scholarship' => 'required|string|max:255',
-            'category_id' => 'required|integer|max:255',
-            'section_id' => 'required|integer|max:255',
-        ]);
-
-        Student::create($validator);
+        Student::create($request->validated());
 
         return redirect(route('students.index'))->with('message', 'Student created');
     }
@@ -64,15 +50,18 @@ class StudentController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        return view('students.edit', ['student' => Student::findOrFail($id)]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(StudentRequest $request, string $id)
     {
-        //
+        $student = Student::findOrFail($id);
+        $student->update($request->validated());
+
+        return redirect()->route('students.index')->with('message', 'Student updated successfully!');
     }
 
     /**
