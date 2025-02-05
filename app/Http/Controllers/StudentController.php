@@ -12,7 +12,9 @@ class StudentController extends Controller
      */
     public function index()
     {
-        //
+        $students = Student::with(['academicRecords', 'category', 'section', 'subjects'])->latest()->paginate(20);
+
+        return view('students.index', ['students' => $students]);
     }
 
     /**
@@ -45,7 +47,8 @@ class StudentController extends Controller
         ]);
 
         Student::create($validator);
-        return redirect('/')->with('message','Student created');
+
+        return redirect(route('students.index'))->with('message','Student created');
     }
 
     /**

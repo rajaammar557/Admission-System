@@ -8,7 +8,7 @@ use App\Models\Student;
 
 Route::get('/home', [HomeController::class, 'index']);
 
-Route::resource('student', StudentController::class);
+Route::resource('students', StudentController::class);
 Route::get('/', function () {
     return view('welcome');
 });
