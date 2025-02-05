@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Student;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -31,5 +32,20 @@ class StudentFactory extends Factory
             'section_id' => rand(1, 4),
             'category_id' => rand(1, 4),
         ];
+    }
+    public function configure()
+    {
+        return $this->afterCreating(function (Student $student) {
+            if ($student->section->id == '1') {
+                $subjects = [1, 2, 3, 5, 6, 7];
+            } else if ($student->section->id == '2') {
+                $subjects = [1, 2, 3, 4, 6, 7];
+            } else if ($student->section->id == '3') {
+                $subjects = [1, 2, 3, 4, 8, 6];
+            } else if ($student->section->id == '4') {
+                $subjects = [1, 2, 3, 13, 9, 14];
+            }
+            $student->subjects()->attach($subjects);
+        });
     }
 }
