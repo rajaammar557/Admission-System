@@ -19,6 +19,12 @@
             <p>Board: {{ $record->board }}</p>
             <p>Group: {{ $record->group }}</p>
         @endforeach
+
+        <h1 class="mt-5 text-2xl">Subjects</h1>
+
+        @foreach ($student->subjects as $subject)
+            <p>{{ $subject->name }}</p>
+        @endforeach
     </div>
     <div class="flex justify-between mt-6">
 
