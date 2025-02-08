@@ -37,4 +37,11 @@ class StudentRequest extends FormRequest
             'section_id' => 'required|exists:sections,id',
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'scholarship.in' => 'The scholarship field must be Yes or No.',
+        ];
+    }
 }

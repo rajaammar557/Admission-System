@@ -120,4 +120,5 @@
             {{ __('Create Student') }}
         </x-primary-button>
     </form>
+    <x-message :message="session('message')" />
 </x-main-layout>
