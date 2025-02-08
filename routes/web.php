@@ -4,11 +4,14 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\StudentController;
-use App\Models\Student;
+use App\Http\Controllers\AcademicRecordController;
 
 Route::get('/home', [HomeController::class, 'index']);
 
 Route::resource('students', StudentController::class);
+
+Route::resource('academic-records', AcademicRecordController::class);
+
 Route::get('/', function () {
     return view('welcome');
 });

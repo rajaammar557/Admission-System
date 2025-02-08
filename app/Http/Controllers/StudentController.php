@@ -32,9 +32,11 @@ class StudentController extends Controller
      */
     public function store(StudentRequest $request)
     {
-        Student::create($request->validated());
+        $student = Student::create($request->validated());
 
-        return redirect(route('students.index'))->with('message', 'Student created');
+        session(['studentId' => $student->id]);
+
+        return redirect(route('academic-records.create'))->with(['message' => 'Student created']);
     }
 
     /**
