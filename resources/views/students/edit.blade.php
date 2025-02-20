@@ -1,7 +1,7 @@
 <x-main-layout>
 
     <p class="text-xl mt-10 mb-5 block text-center">
-        <i class="fas fa-list mr-3"></i> Create new Addmission
+        <i class="fas fa-list mr-3"></i> Update the  Addmission
     </p>
 
     <form action="{{ route('students.update', $student->id) }}" method="post"
@@ -120,7 +120,7 @@
         </div>
 
         <x-primary-button class="mt-6">
-            {{ __('Create Student') }}
+            {{ __('Update Student') }}
         </x-primary-button>
     </form>
     <x-message :message="session('message')" />
