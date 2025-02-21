@@ -38,6 +38,7 @@ class AcademicRecordController extends Controller
         if (!session('studentId') || !Student::find(session('studentId'))) {
             return redirect()->route('students.index')->with('message', 'Invalid student ID!');
         }
+
         $validator = $request->validate([
             'exam_type'   => 'required|in:SSC,HSSC',
             'year'        => 'required|integer|digits:4|min:1900|max:' . date('Y'),
@@ -52,9 +53,7 @@ class AcademicRecordController extends Controller
 
         AcademicRecord::create($validator);
 
-        session()->forget('studentId');
-
-        return redirect(route('students.index'))->with(['message' => 'Record created']);
+        return redirect(route('subjects.create'))->with(['message' => 'Record created']);
     }
 
     /**

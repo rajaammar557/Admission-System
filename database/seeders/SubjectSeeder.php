@@ -28,5 +28,6 @@ class SubjectSeeder extends Seeder
         Subject::factory()->create(['name' => 'Health and Phsical Education']);// 13
         Subject::factory()->create(['name' => 'Islamyat Elactive']);// 14
         Subject::factory()->create(['name' => 'Stats']);// 15
+        Subject::factory()->create(['name' => 'Pak Study']);// 16
     }
 }
