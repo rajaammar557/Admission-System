@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Section;
 use App\Models\Student;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -36,13 +37,13 @@ class StudentFactory extends Factory
     public function configure()
     {
         return $this->afterCreating(function (Student $student) {
-            if ($student->section->id == '1') {
+            if ($student->section->id == Section::Pre_Medical) {
                 $subjects = [1, 2, 3, 5, 6, 7];
-            } else if ($student->section->id == '2') {
+            } else if ($student->section->id == Section::Pre_Engineering) {
                 $subjects = [1, 2, 3, 4, 6, 7];
-            } else if ($student->section->id == '3') {
+            } else if ($student->section->id == Section::Ics) {
                 $subjects = [1, 2, 3, 4, 8, 6];
-            } else if ($student->section->id == '4') {
+            } else if ($student->section->id == Section::Fa) {
                 $subjects = [1, 2, 3, 13, 9, 14];
             }
             $student->subjects()->attach($subjects);

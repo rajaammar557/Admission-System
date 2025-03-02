@@ -23,36 +23,68 @@ class SubjectController extends Controller
      */
     public function create()
     {
-
         if (!session('studentId')) {
-            return redirect(route('students.create'))->with('message', 'fill student form first');
-        };
+            return redirect(route('students.create'))->with('message', 'Fill student form first');
+        }
 
-        return view('subjects.create', [
-            'student' => Student::with(['section', 'subjects'])->whereId(session('studentId'))->first()
-        ]);
+        $student = Student::with('section')->whereId(session('studentId'))->first();
+        $sectionName = $student->section->name;
+        // Get compulsory subjects
+        $compulsorySubjects = Subject::where('compulsory', 1)->get();
+
+        // Get elective subjects that are not compulsory
+        $electiveSubjects = $student->section->subjects()->where('compulsory', 0)->get();
+        // Special electives for FA and ICS
+        $specialElectives = [];
+        if ($student->section->id == Section::Fa) {
+            $specialElectives = Subject::whereIn('id', [Subject::Economics, Subject::Islamyat_Elective])->get(); // Economics, Islamyat Elective
+        } elseif ($student->section->id == Section::Ics) {
+            $specialElectives = Subject::whereIn('id', [Subject::Physics, Subject::Economics, Subject::Stats])->get(); // Math, Computer
+        }
+
+        return view('subjects.create', compact('compulsorySubjects', 'electiveSubjects', 'specialElectives', 'student', 'sectionName'));
     }
+
+
+
+
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-
+        // Get the student with section details
         $student = Student::with(['section', 'subjects'])->whereId(session('studentId'))->first();
-        $student->subjects()->attach([Subject::English, Subject::Urdu, Subject::Islamyat]);
+
+        // Validation rules (only for special elective)
+        $rules = [];
+
+        if ($student->section->id == Section::Fa || $student->section->id == Section::Ics) {
+            $rules['selectiveSubject'] = 'required|exists:subjects,id';
+        }
+
+        $request->validate($rules);
+
+        // Attach compulsory subjects
+        $compulsorySubjects = [Subject::English, Subject::Urdu, Subject::Islamyat, Subject::Pak_Study];
+        $student->subjects()->sync($compulsorySubjects);
+
 
         if ($student->section->id == Section::Pre_Medical) {
             $student->subjects()->attach([Subject::Bio, Subject::Chemistry, Subject::Physics]);
         } elseif ($student->section->id == Section::Pre_Engineering) {
             $student->subjects()->attach([Subject::Math, Subject::Chemistry, Subject::Physics]);
         } elseif ($student->section->id == Section::Ics) {
-            $student->subjects()->attach([Subject::Math, Subject::Computer, Subject::Physics]);
+            $student->subjects()->attach([Subject::Math, Subject::Computer, $request->input('selectiveSubject')]);
         } elseif ($student->section->id == Section::Fa) {
-            $student->subjects()->attach([Subject::Health_And_Phyiscal_Education, 14, 12]);
+            $student->subjects()->attach([Subject::Health_And_Phyiscal_Education, $request->input('selectiveSubject')]);
         }
-        dd('no');
+
+        return redirect(route('students.index'))->with(['message' => 'Subjects selected successfully!']);
     }
+
+
 
     /**
      * Display the specified resource.
