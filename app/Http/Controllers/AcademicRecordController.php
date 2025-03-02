@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AcademicRecord;
 use App\Models\Student;
 use Illuminate\Http\Request;
+use App\Models\AcademicRecord;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\AcademicRecordRequest;
 
 class AcademicRecordController extends Controller
 {
@@ -31,7 +33,7 @@ class AcademicRecordController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(AcademicRecordRequest $request)
     {
 
         // Validate that student_id exists in the students table
@@ -39,16 +41,7 @@ class AcademicRecordController extends Controller
             return redirect()->route('students.index')->with('message', 'Invalid student ID!');
         }
 
-        $validator = $request->validate([
-            'exam_type'   => 'required|in:SSC,HSSC',
-            'year'        => 'required|integer|digits:4|min:1900|max:' . date('Y'),
-            'roll_no'     => 'required|integer|unique:academic_records,roll_no',
-            'marks'       => 'required|integer|min:0',
-            'percentage'  => 'required|numeric|between:0,100',
-            'board'       => 'required|string|max:255',
-            'group'       => 'required|in:Science,Arts',
-        ]);
-
+        $validator = $request->validated();
         $validator['student_id'] = session('studentId');
 
         AcademicRecord::create($validator);
@@ -69,15 +62,18 @@ class AcademicRecordController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        return view('academic-records.edit', ['academicRecord' => AcademicRecord::findOrFail($id)]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(AcademicRecordRequest $request, string $id)
     {
-        //
+        $academicRecord = AcademicRecord::findOrFail($id);
+        $academicRecord->update($request->validated());
+
+        return redirect()->route('students.index')->with('message', 'Record updated successfully!');
     }
 
     /**

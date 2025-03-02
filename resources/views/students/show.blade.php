@@ -18,6 +18,7 @@
             <p>Percentage: {{ $record->percentage }}</p>
             <p>Board: {{ $record->board }}</p>
             <p>Group: {{ $record->group }}</p>
+            <a href="{{ route('academic-records.edit', $record->id) }}" class="text-green-500 border-green-500 py-2 px-5 text-sm mt-2 border-2 rounded">Edit</a>
         @endforeach
 
         <h1 class="mt-5 text-2xl">Subjects</h1>
