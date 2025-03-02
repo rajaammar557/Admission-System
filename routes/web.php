@@ -16,7 +16,7 @@ Route::resource('academic-records', AcademicRecordController::class);
 Route::resource('subjects', SubjectController::class);
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect(route('students.index'));
 });
 
 Route::get('/dashboard', function () {
